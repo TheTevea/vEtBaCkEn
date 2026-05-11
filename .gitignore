@@ -1,0 +1,155 @@
+# =============================================================================
+# .gitignore — CamTicket (CakePHP) — Security-focused
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# SENSITIVE CONFIGURATION — NEVER commit these files
+# -----------------------------------------------------------------------------
+
+# CakePHP database connection (contains DB credentials)
+app/config/database.php
+
+# Payment gateway credentials & API keys
+app/webroot/includes/AcledaCheckout.php
+app/webroot/includes/NewWingConfig.php
+app/webroot/includes/NewWingWebConfig.php
+app/webroot/includes/PayWayApiBuvasea.php
+app/webroot/includes/PayWayApiCheckout.php
+
+# CakePHP core security config (Security.salt, Security.cipherSeed, etc.)
+app/config/core.php
+
+# Any local/environment override configs
+app/config/*.local.php
+*.env
+.env
+.env.*
+
+# -----------------------------------------------------------------------------
+# CAKEPHP — Runtime / generated files
+# -----------------------------------------------------------------------------
+
+# Cache files (model cache, views, persistent data)
+app/tmp/cache/
+app/tmp/logs/
+app/tmp/sessions/
+app/tmp/tests/
+
+# Keep the tmp folder structure but not its contents
+!app/tmp/cache/
+!app/tmp/logs/
+!app/tmp/sessions/
+!app/tmp/tests/
+app/tmp/cache/*
+app/tmp/logs/*
+app/tmp/sessions/*
+app/tmp/tests/*
+
+# Keep empty placeholder files so directories exist in git
+!app/tmp/cache/.gitkeep
+!app/tmp/logs/.gitkeep
+!app/tmp/sessions/.gitkeep
+!app/tmp/tests/.gitkeep
+
+# -----------------------------------------------------------------------------
+# USER-UPLOADED FILES — Do not commit user content
+# -----------------------------------------------------------------------------
+app/webroot/files/*
+!app/webroot/files/empty
+
+app/webroot/img/uploads/
+app/webroot/public/
+
+# -----------------------------------------------------------------------------
+# DATABASE SQL DUMPS — May contain real customer data
+# -----------------------------------------------------------------------------
+mysql/
+*.sql
+*.sql.gz
+
+# -----------------------------------------------------------------------------
+# OS & SYSTEM FILES
+# -----------------------------------------------------------------------------
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# -----------------------------------------------------------------------------
+# EDITOR / IDE FILES
+# -----------------------------------------------------------------------------
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains (PhpStorm, WebStorm, etc.)
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim / Emacs
+*.swp
+*.swo
+*.bak
+*.orig
+*#
+
+# NetBeans
+nbproject/
+
+# -----------------------------------------------------------------------------
+# SVN METADATA (already using Git, SVN dirs should not be committed)
+# -----------------------------------------------------------------------------
+.svn/
+
+# -----------------------------------------------------------------------------
+# LOGS & DEBUG FILES
+# -----------------------------------------------------------------------------
+*.log
+error_log
+access_log
+php_error.log
+app/webroot/test.php
+
+# -----------------------------------------------------------------------------
+# NODE / NPM (if any frontend tooling is ever added)
+# -----------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist/
+.cache/
+
+# -----------------------------------------------------------------------------
+# COMPOSER (if added later)
+# -----------------------------------------------------------------------------
+vendor/
+composer.lock
+
+# -----------------------------------------------------------------------------
+# MISCELLANEOUS
+# -----------------------------------------------------------------------------
+
+# Compiled / minified output caches
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*.old

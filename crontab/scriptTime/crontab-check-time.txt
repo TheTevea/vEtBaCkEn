@@ -1,0 +1,1 @@
+@reboot /usr/bin/php /mnt/scriptTime/check_time.php

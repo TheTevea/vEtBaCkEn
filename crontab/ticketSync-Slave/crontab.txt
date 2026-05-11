@@ -1,0 +1,4 @@
+## Ticket
+*/3 * * * * /usr/bin/php /mnt/ticketSync/move.php
+*/5 * * * * /usr/bin/php /mnt/ticketSync/receive.php
+*/1 * * * * /usr/bin/php /mnt/ticketSync/send.php

@@ -1,0 +1,37 @@
+#boxscroll {
+    padding: 40px;
+    height: 220px;
+    width: 300px;
+    border: 2px solid #00F;
+    overflow: auto;
+    margin-bottom:30px;
+}
+#boxscroll2 {
+    padding: 40px;
+    height: 120px;
+    width: 730px;
+    border: 2px solid #F00;
+    overflow: auto;
+}
+#boxscroll3 {
+    overflow: hidden;
+}
+#boxframe {
+    position:absolute;
+    top:28px;
+    left:420px;
+    width:400px;
+    height:300px;
+    overflow:auto;
+    border: 2px solid #0F0;
+}
+#boxscroll4 {
+    height: 300px;
+    margin-top: 40px;
+    background-color: #00FF66;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 18px;
+    padding: 20px;
+    color: #006633;
+    overflow: auto;
+}

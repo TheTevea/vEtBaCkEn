@@ -1,0 +1,341 @@
+/** Template Style Info **/
+@font-face {
+    font-family: 'KhBattambang';
+    src: url('../fonts/Kh-Battambang.ttf');
+}
+
+@font-face {
+    font-family: 'RobotoRegular';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+* {
+    font-family: RobotoRegular, KhBattambang;
+    font-size:12px;
+}
+body {
+    margin:0;
+    padding:0;
+}
+.printable {
+   display: none;
+}
+h1.title {
+    margin:0 0 10px 0;
+    padding:4px 10px 5px 50px;
+    background: url(../img/layout/arrow.gif) left;
+    background-repeat: no-repeat;
+    border: 1px solid #00afc1;
+    font-family: RobotoRegular, KhBattambang;
+    font-size: 18px;
+    color: #00afc1;
+}
+.menu{
+    height: 20px;
+}
+.menu .menu_item{
+    padding: 0 15px 0 15px;
+    cursor: pointer;
+}
+.menu .current, .menu .selected{
+    border: 1px solid #999;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    behavior: url(../img/border-radius.htc);
+}
+.leftPanel{
+    float: left;
+    width: 100%;
+}
+.rightPanel{
+    float: right;
+    width: 100%;
+    display: none;
+}
+
+/** Clear DIV **/
+.clear{
+    clear: both;
+    padding-top: 10px;
+}
+
+/** General Style Info **/
+a:link,a:active,a:visited{
+    color:#00afc1;
+    text-decoration:none;
+}a:hover{
+    color:#e67824;
+    text-decoration:underline;
+}
+a.white:link,a.white:active,a.white:visited{
+    color:#FFFFFF;
+    text-decoration:none;
+}a.white:hover{
+    border-bottom:1px dotted #FFFFFF;
+}
+a img {
+    border:none;
+}
+a.lang:link,a.lang:active,a.lang:visited{
+    color:#00afc1;
+    font-weight: normal;
+    padding:3px;
+    border:1px solid #00afc1;
+    text-decoration:none;
+}a.lang:hover{
+    color:#e67824;
+    font-weight: normal;
+    padding:3px;
+    text-decoration:none;
+}
+
+input[type=text] {
+    padding: 5px;
+    width: 120px;
+    letter-spacing: 0.05em;
+    background-image: -moz-linear-gradient(center bottom , white 85%, #EEEEEE 99%);
+    border: 1px solid #AAAAAA;
+    border-radius: 4px 4px 4px 4px;
+}
+
+/** Form Style Info **/
+form input[type=text], form input[type=password] {
+    padding: 5px;
+    width: 400px;
+    letter-spacing: 0.05em;
+    background-image: -moz-linear-gradient(center bottom , white 85%, #EEEEEE 99%);
+    border: 1px solid #AAAAAA;
+    border-radius: 4px 4px 4px 4px;
+}
+form input[type=text]:focus, form input[type=password]:focus, form textarea:focus, form select:focus {
+    border: 1px solid #3875D7;
+}
+form select {
+    padding:5px;
+    height: 28px;
+    width: 200px;
+    letter-spacing: 0.05em;
+    background-image: -moz-linear-gradient(center bottom , white 85%, #EEEEEE 99%);
+    border: 1px solid #AAAAAA;
+    border-radius: 4px 4px 4px 4px;
+}
+form textarea {
+    padding:5px;
+    width: 400px;
+    height: 100px;
+    resize: none;
+    border: 1px solid;
+    border: 1px solid #AAAAAA;
+    background-image: -moz-linear-gradient(center bottom , white 85%, #EEEEEE 99%);
+    border-radius: 4px 4px 4px 4px;
+}
+.search-choice{
+    top: 5px;
+}
+form table.table input[type=text], form table.table input[type=password] {
+    padding: 0px;
+    width: 100%;
+    letter-spacing: 0.05em;
+    background-image: none;
+    border: 0px;
+}
+form table.table input[type=text]:focus, form table.table input[type=password]:focus, form table.table textarea:focus, form table.table select:focus {
+    border: 0px;
+}
+form table.table select {
+    padding: 0px;
+    height: 28px;
+    width: 100%;
+    letter-spacing: 0.05em;
+    background-image: none;
+    border: 0px;
+}
+form table.table tr:hover {
+    background-color: #F0F0F0;
+}
+
+div.checkbox {
+    float: left;
+}
+.red{
+    color: #F00;
+}
+.blue{
+    color: #0000FF;
+}
+
+/** Legend **/
+div.legend div.legend_title {
+    background: #00afc1;
+    color: #FFF;
+    padding: 5px;
+}
+div.legend div.legend_sub_title {
+    background: #EEE;
+    color: #000;
+    font-weight: bold;
+    font-style: italic;
+    border-left: 1px solid #00afc1;
+    border-right: 1px solid #00afc1;
+    border-bottom: 1px solid #00afc1;
+    padding: 5px;
+}
+div.legend div.legend_content {
+    border-left: 1px solid #00afc1;
+    border-right: 1px solid #00afc1;
+    border-bottom: 1px solid #00afc1;
+    padding: 5px;
+}
+
+/* Module */
+.moduleType{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+    border-bottom: 1px dotted #999;
+}
+.module{
+    padding: 5px 5px 5px 20px;
+    border-bottom: 1px dotted #999;
+}
+.hidden{
+    display: none;
+}
+#diliveryCount{
+    background: red;
+    color: white;
+    padding: 0 5px;
+    cursor: pointer;
+}
+.wrap-print-slip{
+    width: 300px;
+    margin: 0 auto;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.inputDisable {
+    color: #D4D0C8;
+}
+.inputEnable {
+    color: #000;
+}
+
+.settingMenu {
+    padding: 0px; 
+    display: none;
+}
+
+.settingMenu .divMenu
+{
+    display: block;
+    background: #FFF;
+    width: 240px;
+    position: absolute;
+    z-index: 200;
+    border: 1px solid #D4D0C8; 
+}
+
+.settingMenu .divMenu h1{
+    display: block;
+    font-size: 13px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #D4D0C8;
+}
+
+.settingMenu .divMenu table{
+    width: 100%;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.settingMenu .divMenu table td{
+    font-size: 12px;
+    color: #000;
+    font-weight: normal;
+}
+
+.settingMenu .divMenu table button{
+    height: 30px;
+    width: 70px;
+    cursor: pointer;
+}
+
+.settingMenu .divMenu table button:hover{
+    height: 30px;
+    width: 70px;
+}
+
+.button2 {
+    background-color: #eb675e; /* Blue background */
+    border: none; /* Remove borders */
+    color: #ffffff !important;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer; /* Mouse pointer on hover */
+    min-width: 100px;
+    text-align: left;
+    transition: all 0.3s ease 0s;
+}
+
+/* Darker background on mouse-over */
+.button2:hover {
+    background-color: #eb675e;
+    border: 1px #fff solid;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    text-decoration: none;
+}
+
+.button3 {
+    background-color: #0063dc; /* Blue background */
+    border: none; /* Remove borders */
+    color: #ffffff !important;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer; /* Mouse pointer on hover */
+    min-width: 100px;
+    text-align: left;
+    transition: all 0.3s ease 0s;
+}
+
+/* Darker background on mouse-over */
+.button3:hover {
+    color: #0063dc !important;
+    font-weight: bold !important;
+    text-decoration: none;
+}
+
+.button4 {
+    background-color: #0063dc; /* Blue background */
+    border: none; /* Remove borders */
+    color: #ffffff !important;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer; /* Mouse pointer on hover */
+    min-width: 100px;
+    text-align: left;
+    transition: all 0.3s ease 0s;
+    cursor: not-allowed;
+    background: red;
+}
+
+.button4:hover {
+    color: red !important;
+    font-weight: bold !important;
+    text-decoration: none;
+}
+
+.viewScheduleList:hover{
+    background-color: #f2f6fa;
+}

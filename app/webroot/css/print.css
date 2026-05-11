@@ -1,0 +1,21 @@
+/* CSS Document */
+@font-face {
+    font-family: 'KhBattambang';
+    src: url('../fonts/Content-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'RobotoRegular';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+* {
+    font-family: RobotoRegular, KhBattambang;
+    font-size: 9px;
+    background: none !important;
+}
+ .noprint{
+    display : none;
+}
+.printable {
+   display: table;
+}

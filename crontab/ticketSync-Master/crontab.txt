@@ -1,0 +1,2 @@
+## Ticket
+*/1 * * * * /usr/bin/php /mnt/ticketSync/serverMove.php
