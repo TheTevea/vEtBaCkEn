@@ -3137,63 +3137,14 @@ class PaymentsController extends AppController {
         exit;
     }
 
-    function deeplinkAcledaPay($transactionId = null, $token = null, $oprDevice = null){
+     function deeplinkAcledaPay($transactionId = null, $token = null, $oprDevice = null){
         $this->layout = 'ajax';
-        $this->autoRender = false;
-
-        if(!empty($_SERVER['HTTP_ORIGIN'])){
-            header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
-            header('Vary: Origin');
-        } else {
-            header('Access-Control-Allow-Origin: *');
-        }
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept');
-        header('Access-Control-Max-Age: 86400');
-        header('Content-Type: application/json; charset=utf-8');
-
-        if(!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
-            echo json_encode(array('status' => 1));
-            exit;
-        }
 
         $response = array(
             'status' => 0,
             'info' => "Your token has been expired!",
-            'sessionId' => "",
-            'paymenttokenid' => "",
-            'deeplinkUrl' => "",
             'result' => array()
         );
-
-        if(!empty($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
-            $postData = array();
-            if(!empty($this->data)){
-                $postData = $this->data;
-            } else {
-                $rawPost = file_get_contents('php://input');
-                $jsonPost = json_decode($rawPost, true);
-                if(is_array($jsonPost)){
-                    $postData = $jsonPost;
-                }
-            }
-
-            if(empty($transactionId) && !empty($postData['transactionId'])){
-                $transactionId = $postData['transactionId'];
-            } else if(empty($transactionId) && !empty($postData['transaction_id'])){
-                $transactionId = $postData['transaction_id'];
-            }
-
-            if(empty($token) && !empty($postData['token'])){
-                $token = $postData['token'];
-            }
-
-            if(empty($oprDevice) && !empty($postData['oprDevice'])){
-                $oprDevice = $postData['oprDevice'];
-            } else if(empty($oprDevice) && !empty($postData['opr_device'])){
-                $oprDevice = $postData['opr_device'];
-            }
-        }
 
         if(empty($transactionId) || empty($token)){
             $response['info'] = "Invalid data post Transaction ID or Token";
@@ -3264,9 +3215,9 @@ class PaymentsController extends AppController {
                             $response['status'] = 1;
                             $response['info'] = "Success";
                             $response['result'] = $result['result'];
-                            $response['sessionId'] = !empty($result['result']['sessionid']) ? $result['result']['sessionid'] : "";
-                            $response['deeplinkUrl'] = !empty($result['result']['deeplinkUrl']) ? $result['result']['deeplinkUrl'] : "";
-                            $response['paymenttokenid'] = !empty($result['result']['xTran']['paymentTokenid']) ? $result['result']['xTran']['paymentTokenid'] : "";
+                            $response['result']['sessionId'] = !empty($result['result']['sessionid']) ? $result['result']['sessionid'] : "";
+                            $response['result']['deeplinkUrl'] = !empty($result['result']['deeplinkUrl']) ? $result['result']['deeplinkUrl'] : "";
+                            $response['result']['paymenttokenid'] = !empty($result['result']['xTran']['paymentTokenid']) ? $result['result']['xTran']['paymentTokenid'] : "";
 
                             if(!empty($response['paymenttokenid'])){
                                 mysql_query("INSERT INTO `acleda_access_transactions` (`id`, `online_order_id`, `aclenda_payment_token_id`, `created`, `modified`, `status`)

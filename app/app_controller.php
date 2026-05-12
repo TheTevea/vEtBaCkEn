@@ -88,6 +88,12 @@ class AppController extends Controller {
                 )
             ),
             array('text' => MENU_BUS_RENTAL, 'url' => '/bus_rentals/index', 'target' => 'ajax'),
+            array('text' => 'Mini App', 'url' => '', 'target' => '',
+                'submenu' => array(
+                    array('text' => 'Mini App', 'url' => '/mini_app_partners/index', 'target' => 'ajax'),
+                    array('text' => 'Mini App Discount', 'url' => '/mini_app_partner_discounts/index', 'target' => 'ajax')
+                )
+            ),
             // array('text' => MENU_SYNC_MONITORING, 'url' => $syncUrl, 'target' => 'ajax'),
             // array('text' => MENU_WEBSITE, 'url' => '', 'target' => '',
             //     'submenu' => array(

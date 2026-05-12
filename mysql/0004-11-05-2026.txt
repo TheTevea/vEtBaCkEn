@@ -1,0 +1,122 @@
+INSERT INTO `module_types` (`name`, `ordering`, `status`, `type`)
+SELECT 'Mini App', 301, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_types` WHERE `name` = 'Mini App');
+
+SET @mini_app_module_type_id := (SELECT `id` FROM `module_types` WHERE `name` = 'Mini App' LIMIT 1);
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App (View)', 1, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (View)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App (Add)', 2, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Add)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App (Edit)', 3, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Edit)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App (Update Status)', 4, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Update Status)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App (Delete)', 5, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Delete)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App Discount (View)', 6, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (View)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App Discount (Add)', 7, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Add)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App Discount (Edit)', 8, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Edit)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App Discount (Update Status)', 9, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Update Status)');
+
+INSERT INTO `modules` (`module_type_id`, `name`, `ordering`, `status`, `type`)
+SELECT @mini_app_module_type_id, 'Mini App Discount (Delete)', 10, 1, 1 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Delete)');
+
+UPDATE `modules` SET `ordering` = 1 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (View)';
+UPDATE `modules` SET `ordering` = 2 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Add)';
+UPDATE `modules` SET `ordering` = 3 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Edit)';
+UPDATE `modules` SET `ordering` = 4 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Update Status)';
+UPDATE `modules` SET `ordering` = 5 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Delete)';
+UPDATE `modules` SET `ordering` = 6 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (View)';
+UPDATE `modules` SET `ordering` = 7 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Add)';
+UPDATE `modules` SET `ordering` = 8 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Edit)';
+UPDATE `modules` SET `ordering` = 9 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Update Status)';
+UPDATE `modules` SET `ordering` = 10 WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Delete)';
+
+SET @mini_app_view_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (View)' LIMIT 1);
+SET @mini_app_add_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Add)' LIMIT 1);
+SET @mini_app_edit_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Edit)' LIMIT 1);
+SET @mini_app_status_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Update Status)' LIMIT 1);
+SET @mini_app_delete_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App (Delete)' LIMIT 1);
+SET @mini_app_discount_view_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (View)' LIMIT 1);
+SET @mini_app_discount_add_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Add)' LIMIT 1);
+SET @mini_app_discount_edit_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Edit)' LIMIT 1);
+SET @mini_app_discount_status_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Update Status)' LIMIT 1);
+SET @mini_app_discount_delete_id := (SELECT `id` FROM `modules` WHERE `module_type_id` = @mini_app_module_type_id AND `name` = 'Mini App Discount (Delete)' LIMIT 1);
+
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_view_id, 'mini_app_partners', 'index' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_view_id AND `controllers` = 'mini_app_partners' AND `views` = 'index');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_view_id, 'mini_app_partners', 'ajax' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_view_id AND `controllers` = 'mini_app_partners' AND `views` = 'ajax');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_view_id, 'mini_app_partners', 'view' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_view_id AND `controllers` = 'mini_app_partners' AND `views` = 'view');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_add_id, 'mini_app_partners', 'add' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_add_id AND `controllers` = 'mini_app_partners' AND `views` = 'add');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_edit_id, 'mini_app_partners', 'edit' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_edit_id AND `controllers` = 'mini_app_partners' AND `views` = 'edit');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_status_id, 'mini_app_partners', 'status' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_status_id AND `controllers` = 'mini_app_partners' AND `views` = 'status');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_delete_id, 'mini_app_partners', 'delete' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_delete_id AND `controllers` = 'mini_app_partners' AND `views` = 'delete');
+
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_view_id, 'mini_app_partner_discounts', 'index' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_view_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'index');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_view_id, 'mini_app_partner_discounts', 'ajax' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_view_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'ajax');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_view_id, 'mini_app_partner_discounts', 'view' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_view_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'view');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_add_id, 'mini_app_partner_discounts', 'add' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_add_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'add');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_edit_id, 'mini_app_partner_discounts', 'edit' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_edit_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'edit');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_status_id, 'mini_app_partner_discounts', 'status' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_status_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'status');
+INSERT INTO `module_details` (`module_id`, `controllers`, `views`)
+SELECT @mini_app_discount_delete_id, 'mini_app_partner_discounts', 'delete' FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `module_details` WHERE `module_id` = @mini_app_discount_delete_id AND `controllers` = 'mini_app_partner_discounts' AND `views` = 'delete');
+
+INSERT INTO `permissions` (`group_id`, `module_id`)
+SELECT `groups`.`id`, `modules`.`id`
+FROM `groups`
+INNER JOIN `modules` ON `modules`.`id` IN (@mini_app_view_id, @mini_app_add_id, @mini_app_edit_id, @mini_app_status_id, @mini_app_delete_id, @mini_app_discount_view_id, @mini_app_discount_add_id, @mini_app_discount_edit_id, @mini_app_discount_status_id, @mini_app_discount_delete_id)
+WHERE `groups`.`name` IN ('Administrator', 'System Admin')
+AND NOT EXISTS (
+    SELECT 1 FROM `permissions`
+    WHERE `permissions`.`group_id` = `groups`.`id`
+    AND `permissions`.`module_id` = `modules`.`id`
+);

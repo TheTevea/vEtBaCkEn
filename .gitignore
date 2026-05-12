@@ -66,6 +66,9 @@ app/webroot/public/
 mysql/
 *.sql
 *.sql.gz
+!mysql/
+mysql/*
+!mysql/0004-11-05-2026.txt
 
 # -----------------------------------------------------------------------------
 # OS & SYSTEM FILES
