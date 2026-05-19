@@ -2851,7 +2851,7 @@ class PaymentsController extends AppController {
                     $post['xpayTransaction']['item']         = "1";
                     $post['xpayTransaction']['quantity']     = "1";
                     $post['xpayTransaction']['expiryTime']   = "10";
-                    $post['xpayTransaction']['paymentCard']  = "1";
+                    $post['xpayTransaction']['paymentCard']  = "0";
                     $post['xpayTransaction']['deeplinkId']   = $deeplinId;
 
                     $headers = array(
@@ -3137,7 +3137,7 @@ class PaymentsController extends AppController {
         exit;
     }
 
-     function deeplinkAcledaPay($transactionId = null, $token = null, $oprDevice = null){
+    function deeplinkAcledaPay($transactionId = null, $token = null, $oprDevice = null){
         $this->layout = 'ajax';
 
         $response = array(
@@ -3185,7 +3185,7 @@ class PaymentsController extends AppController {
                     $post['xpayTransaction']['quantity']         = "1";
                     $post['xpayTransaction']['expiryTime']       = "10";
                     $post['xpayTransaction']['oprDevice']        = $oprDevice;
-                    $post['xpayTransaction']['callBackUrl']      = "https://qavetacledaminiapp.udaya-tech.com/#/success";
+                    $post['xpayTransaction']['callBackUrl']      = WEB_MINI_APP_SUCCESS_PAGE."#/success?transactionId=".$transactionId;
                     $post['xpayTransaction']['compName']         = "VET TICKET";
 
                     $headers = array(
@@ -3219,9 +3219,9 @@ class PaymentsController extends AppController {
                             $response['result']['deeplinkUrl'] = !empty($result['result']['deeplinkUrl']) ? $result['result']['deeplinkUrl'] : "";
                             $response['result']['paymenttokenid'] = !empty($result['result']['xTran']['paymentTokenid']) ? $result['result']['xTran']['paymentTokenid'] : "";
 
-                            if(!empty($response['paymenttokenid'])){
+                            if(!empty($response['result']['paymenttokenid'])){
                                 mysql_query("INSERT INTO `acleda_access_transactions` (`id`, `online_order_id`, `aclenda_payment_token_id`, `created`, `modified`, `status`)
-                                             VALUES (NULL, ".$rowChk['id'].", '".$response['paymenttokenid']."', now(), NULL, '1');");
+                                             VALUES (NULL, ".$rowChk['id'].", '".$response['result']['paymenttokenid']."', now(), NULL, '1');");
                             }
                         } else {
                             $response['info'] = !empty($result['result']['errorDetails']) ? $result['result']['errorDetails'] : "Invalid ACLEDA response";
@@ -3241,7 +3241,122 @@ class PaymentsController extends AppController {
         exit;
     }
 
+    function deeplinkAcledaPayComplete(){
+        $this->layout = 'payment';
+        $response = array();
+        // Read JSON request body from API
+        $requestBody = file_get_contents('php://input');
+        $requestData = json_decode($requestBody, true);
+        // Validate required fields from request
+        $transactionId  = isset($requestData['_transactionid']) ? $requestData['_transactionid'] : null;
+        $paymentTokenId = isset($requestData['_paymenttokenid']) ? $requestData['_paymenttokenid'] : null;
+        $resultCode     = isset($requestData['_resultCode']) ? $requestData['_resultCode'] : null;
+        $paymentResult  = isset($requestData['_paymentresult']) ? $requestData['_paymentresult'] : null;
+        if(empty($transactionId) || empty($paymentTokenId)){
+            $response['status']  = 0;
+            $response['info']    = "Invalid Transaction POST";
+        } else if($resultCode !== 0 || $paymentResult !== "SUCCESS"){
+            $response['status']  = 0;
+            $response['info']    = "Payment Not Successful";
+        } else {
+            // Validate online_orders with _transactionid
+            $sqlChk = mysql_query("SELECT * FROM online_orders WHERE code = '".$transactionId."' AND status = 2 AND payment_method_id = 8 LIMIT 1");
+            if(mysql_num_rows($sqlChk)){
+                $rowChk = mysql_fetch_array($sqlChk);
+                // Validate acleda_access_transactions with _paymenttokenid
+                $sqlAcledaStatus = mysql_query("SELECT * FROM acleda_access_transactions WHERE online_order_id = ".$rowChk['id']." AND aclenda_payment_token_id = '".$paymentTokenId."' AND status > 0 ORDER BY id");
+                if(mysql_num_rows($sqlAcledaStatus)){
+                    include('includes/AcledaCheckout.php');
+                    $req_time      = time();
+                    $amount        = ($rowChk['total_amount'] + $rowChk['total_vat'] + $rowChk['service_fee'] + $rowChk['lucky_draw_fee'] - $rowChk['discount_amount'] - $rowChk['coupon_amount'] - $rowChk['payment_method_discount_amount']);
+                    $checkAcledaStatus = false;
+                    while($rowAcledaStatus = mysql_fetch_array($sqlAcledaStatus)){
+                        // CURL
+                        $url  = ACLENDA_DEPPLINK_API_URL."/getTxnStatus";
+                        $post = array(
+                            'loginId' => ACLENDA_DEPPLINK_LOGINID,
+                            'password' => ACLENDA_DEPPLINK_PASSWORD,
+                            'merchantName' => ACLENDA_DEPPLINK_MERCHANT_NAME,
+                            'signature' => ACLENDA_DEPPLINK_SIGNATURE,
+                            'merchantId' => ACLENDA_DEPPLINK_MERCHANT_ID,
+                            'paymentTokenid' => $rowAcledaStatus['aclenda_payment_token_id'],
+                        );
+                        $headers = array(
+                            'accept: */*',
+                            'Content-Type: application/json',
+                            'Referer: '.PAYMENT_URL_REF
+                        );
+                        // CURL
+                        $curl  = curl_init();
+                        curl_setopt($curl, CURLOPT_URL, $url);
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                        curl_setopt($curl, CURLOPT_POST, 1);
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post));
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+                        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+                        $curlResp     = curl_exec($curl);
+                        $curl_errno   = curl_errno($curl);
+                        $curl_error   = curl_error($curl);
+                        curl_close ($curl);
+                        if ($curl_errno > 0) {
+                            $response['status'] = 0;
+                            $response['info']   = "cURL Error ($curl_errno): $curl_error\n";
+                        } else {
+                            $result = json_decode($curlResp, true);
+                            if($result['result']['code'] == "0" && $result['result']['errorDetails'] == "SUCCESS" && $result['result']['xTran']['paymentTokenid'] == $rowAcledaStatus['aclenda_payment_token_id'] && $result['result']['xTran']['invoiceid'] == $rowChk['code'] && $result['result']['xTran']['purchaseAmount'] == $amount){
+                                $checkAcledaStatus = true;
+                            }
+                        }
+                    }
+                    if($checkAcledaStatus == true){
+                        $sqlTicket = mysql_query("SELECT * FROM t_ticket_api_tmps WHERE online_order_id = ".$rowChk['id']." AND status = 1");
+                        if(mysql_num_rows($sqlTicket)){
+                            // Update Order
+                            mysql_query("UPDATE online_orders SET status = 4, modified = now() WHERE id = ".$rowChk['id'].";");
+                            // Update Ticket Tmp
+                            while($rowTicket = mysql_fetch_array($sqlTicket)){
+                                // Update Ticket Tmp
+                                mysql_query("UPDATE t_ticket_api_tmps SET status = 2 WHERE id = ".$rowTicket['id'].";");
+                                // Move Ticket Tmp to Ticket
+                                mysql_query("INSERT INTO t_tickets (`sys_code`, `offline_project_id`, `online_order_id`, `user_logistic_id`, `payment_method_id`, `company_id`, `branch_id`, `date`, `t_agent_id`, `journey_date`, `journey_time`, `t_journey_id`, `t_journey_departure_id`, `t_destination_from_id`, `t_destination_to_id`, `t_boarding_point_id`, `t_drop_off_id`, `t_transportation_type_id`, `t_route_id`, `telephone`, `email`, `price`, `total_amount`, `discount_amount`, `total_vat`, `lucky_draw_fee`, `commission`, `commission_percent`, `service_fee`, `balance`, `currency_center_id`, `note`, `total_seat`, `created`, `terminal_id`, `modified`, `price_type`, `type`, `status`, `agt_refer_code`, `is_vat`, `coupon_id`, `coupon_amount`) 
+                                             SELECT `sys_code`, `offline_project_id`, `online_order_id`, `user_logistic_id`, `payment_method_id`, `company_id`, `branch_id`, `date`, `t_agent_id`, `journey_date`, `journey_time`, `t_journey_id`, `t_journey_departure_id`, `t_destination_from_id`, `t_destination_to_id`, `t_boarding_point_id`, `t_drop_off_id`, `t_transportation_type_id`, `t_route_id`, `telephone`, `email`, `price`, `total_amount`, `discount_amount`, `total_vat`, `lucky_draw_fee`, `commission`, `commission_percent`, `service_fee`, '0', `currency_center_id`, `note`, `total_seat`, `created`, `terminal_id`, `modified`, `price_type`, `type`, `status`, 'Terminal', `is_vat`, `coupon_id`, `coupon_amount` FROM t_ticket_api_tmps WHERE id = ".$rowTicket['id'].";");
+                                // Move Ticket Detail Tmp to Ticket Detail
+                                mysql_query("INSERT INTO t_ticket_details (`sys_code`, `t_ticket_id`, `seat_number`, `label_number`, `gender`, `name`, `telephone`, `passport`, `dob`, `nationally_id`, `unit_price`, `vat_price`, `discount`, `total_amount`, `markup`, `nationally`) 
+                                             SELECT `sys_code`, (SELECT id FROM t_tickets WHERE sys_code = '".$rowTicket['sys_code']."' LIMIT 1), `seat_number`, `label_number`, `gender`, `name`, `telephone`, `passport`, `dob`, `nationally_id`, `unit_price`, `vat_price`, `discount`, `total_amount`, `service_fee`, `nationally` FROM t_ticket_detail_api_tmps WHERE t_ticket_api_tmp_id = (SELECT id FROM t_ticket_api_tmps WHERE id = ".$rowTicket['id']." LIMIT 1);"); 
+                                mysql_query("UPDATE t_ticket_api_tmps SET status = -3 WHERE id = ".$rowTicket['id'].";");
+                                // Update Seat Status
+                                mysql_query("UPDATE t_seat_controls SET status = 2 WHERE t_ticket_api_tmp_id = ".$rowTicket['id'].";");
+                            }
+                            // Update Aclenda Payment
+                            mysql_query("UPDATE acleda_access_transactions SET modified = now(), status = 2 WHERE online_order_id = ".$rowChk['id']);
+                            $response['status']  = 1;
+                            $response['info']    = "Success";
+                        } else {
+                            $response['status']  = 0;
+                            $response['info']    = "Invalid Ticket Transaction";
+                        }
+                    } else {
+                        $response['status']  = 0;
+                        $response['info']    = "Invalid Payment Status";
+                    }
+                } else {
+                    $response['status']  = 0;
+                    $response['info']    = "Invalid Payment Transaction";
+                }
+            } else {
+                $response['status']  = 0;
+                $response['info']    = "Invalid Transaction ID";
+            }
+        }
+        // if($type == 1){ // APP Success Response
+        //     echo json_encode($response);
+        //     exit;
+        // } else { // Mini App Success Responnse
+        //     header('Location: '.WEB_MINI_APP_SUCCESS_PAGE."#/success?transactionId=".$transactionId);
+        // }
+    }
+
 }
 
 ?>
-
